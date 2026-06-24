@@ -3,11 +3,11 @@
     <div class="flex items-center justify-between mb-6">
             <div>
                 <h2  class="text-2xl font-bold text-gray-900 dark:text-white">
-                    Categories
+                    Trashed Categories
                 </h2>
 
                 <p class="text-gray-500">
-                    Manage inventory categories.
+                    Restore deleted categories.
                 </p>
             </div>
 
@@ -17,14 +17,6 @@
                 <x-primary-button>
                     New Category
                 </x-primary-button>
-            </a>
-
-            <a
-                href="{{ route('categories.trash') }}"
-            >
-                <x-secondary-button>
-                    Trash
-                </x-secondary-button>
             </a>
     </div>
 
@@ -94,32 +86,19 @@
                             {{ $category->created_at->format('d M Y') }}
                         </x-app.table-cell>
 
-                        {{-- <x-app.table-cell>
-                            Edit | Delete
-                        </x-app.table-cell> --}}
-
                         <td class="space-x-2">
 
-                            <a
-                                href="{{ route('categories.edit', $category) }}"
-                                class="text-indigo-600 hover:text-indigo-900"
-                            >
-                                Edit
-                            </a>
-
-                            <form
-                                action="{{ route('categories.destroy', $category) }}"
+                         <form
+                                action="{{ route('categories.restore', $category->id) }}"
                                 method="POST"
-                                class="inline"
                             >
                                 @csrf
-                                @method('DELETE')
+                                @method('PATCH')
 
                                 <button
-                                    onclick="return confirm('Move category to trash?')"
-                                    class="text-red-600 hover:text-red-900"
+                                    class="text-green-600 hover:text-green-900"
                                 >
-                                    Delete
+                                    Restore
                                 </button>
 
                             </form>

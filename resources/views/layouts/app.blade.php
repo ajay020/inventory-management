@@ -25,6 +25,12 @@
                 @include('layouts.header')
 
                 <main class="p-8">
+                    @if (session('success'))
+                        <x-app.alert>
+                            {{ session('success') }}
+                        </x-app.alert>
+                    @endif
+                    
                     {{ $slot }}
                 </main>
 

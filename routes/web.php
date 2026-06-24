@@ -8,6 +8,27 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get(
+    'categories/trash',
+    [CategoryController::class, 'trash']
+)->name('categories.trash');
+
+Route::patch(
+    'categories/{category}/restore',
+    [CategoryController::class, 'restore']
+)->name('categories.restore');
+
+Route::delete(
+    'categories/{category}/force-delete',
+    [CategoryController::class, 'forceDelete']
+)
+->withTrashed()
+->name('categories.force-delete');
+
+Route::middleware('auth')->group(function () {
+    Route::resource('categories', CategoryController::class);
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -19,8 +40,11 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware('auth')->group(function () {
-    Route::resource('categories', CategoryController::class);
-});
+
+
+
+
+
+
 
 require __DIR__.'/auth.php';

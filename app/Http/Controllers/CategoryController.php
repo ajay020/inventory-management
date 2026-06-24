@@ -11,9 +11,14 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(  )   
     {
-        $categories = Category::latest()->paginate(10);
+        $categories = Category::query()
+                        ->search(request('search'))
+                        ->latestFirst()
+                        ->paginate(10)
+                        ->withQueryString();
+
         return view('categories.index', compact('categories'));
     }
 
@@ -22,7 +27,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view("categories.create");
     }
 
     /**
@@ -30,7 +35,13 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        // Category::create( $request->validated());
+        $category = new Category($request->validated());
+        $category->save();
+
+        return redirect()
+            ->route("categories.index")
+            ->with("success", "Category created successfully.");
     }
 
     /**
@@ -46,7 +57,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -54,7 +65,13 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $category->fill($request->validated());
+
+        $category->save();
+
+        return redirect()
+            ->route("categories.index")
+            ->with('success', 'Category updated successfully.');
     }
 
     /**
@@ -62,6 +79,46 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+         $category->delete();
+
+        return redirect()
+            ->route('categories.index')
+            ->with('success', 'Category moved to trash.');
+    }
+
+    public function trash()
+    {
+        $categories = Category::onlyTrashed()
+            ->latest('deleted_at')
+            ->paginate(10);
+
+        return view(
+            'categories.trash',
+            compact('categories')
+        );
+    }
+
+    public function restore($id)
+    {
+        $category = Category::onlyTrashed()
+            ->findOrFail($id);
+
+        $category->restore();
+
+        return redirect()
+            ->route('categories.trash')
+            ->with('success', 'Category restored.');
+    }
+
+    public function forceDelete(Category $category)
+    {
+        $category->forceDelete();
+
+        return redirect()
+            ->route('categories.trash')
+            ->with(
+                'success',
+                'Category permanently deleted.'
+            );
     }
 }
