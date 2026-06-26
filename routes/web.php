@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -8,6 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Category
 Route::get(
     'categories/trash',
     [CategoryController::class, 'trash']
@@ -29,10 +31,28 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
 });
 
+// Product
+Route::get(
+    'products/trash',
+    [ProductController::class, 'trash']
+)->name('products.trash');
+
+Route::patch(
+    'products/{product}/restore',
+    [ProductController::class, 'restore']
+)
+->withTrashed()
+->name('products.restore');
+
+Route::resource('products', ProductController::class);
+
+
+// Dashboard 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Profile 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

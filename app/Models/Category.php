@@ -19,6 +19,11 @@ class Category extends Model
         'description',
     ];
 
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
     protected static function booted(): void
     {
         // static::creating(function (Category $category) {

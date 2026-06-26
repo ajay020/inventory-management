@@ -94,10 +94,6 @@
                             {{ $category->created_at->format('d M Y') }}
                         </x-app.table-cell>
 
-                        {{-- <x-app.table-cell>
-                            Edit | Delete
-                        </x-app.table-cell> --}}
-
                         <td class="space-x-2">
 
                             <a
@@ -107,22 +103,10 @@
                                 Edit
                             </a>
 
-                            <form
-                                action="{{ route('categories.destroy', $category) }}"
-                                method="POST"
-                                class="inline"
-                            >
-                                @csrf
-                                @method('DELETE')
-
-                                <button
-                                    onclick="return confirm('Move category to trash?')"
-                                    class="text-red-600 hover:text-red-900"
-                                >
-                                    Delete
-                                </button>
-
-                            </form>
+                             <x-app.delete-button
+                                   :action="route('categories.destroy', $category)"
+                                    message="Move category to trash?"
+                            />
 
                         </td>
 

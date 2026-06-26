@@ -88,20 +88,9 @@
 
                         <td class="space-x-2">
 
-                         <form
-                                action="{{ route('categories.restore', $category->id) }}"
-                                method="POST"
-                            >
-                                @csrf
-                                @method('PATCH')
-
-                                <button
-                                    class="text-green-600 hover:text-green-900"
-                                >
-                                    Restore
-                                </button>
-
-                            </form>
+                            <x-app.restore-button  :action="route('categories.restore', $category->id)" > 
+                                Restore 
+                            </x-app.restore-button>
 
                         </td>
 

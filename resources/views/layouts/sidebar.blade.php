@@ -27,6 +27,13 @@
                 Categories
             </x-app.sidebar-link>
 
+            <x-app.sidebar-link
+                :href="route('products.index')"
+                :active="request()->routeIs('products.*')"
+            >
+                Products
+            </x-app.sidebar-link>
+
         </div>
     </nav>
 
