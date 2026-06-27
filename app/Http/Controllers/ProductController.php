@@ -113,4 +113,17 @@ class ProductController extends Controller {
             ->route('products.trash')
             ->with('success', 'Product restored.');
     }
+
+    public function lowStock () {
+        $products = Product::query()
+            ->with('category')
+            ->lowStock()
+            ->latest()
+            ->paginate(10);
+
+        return view(
+            'products.low-stock', 
+            compact('products')
+        );
+    }
 }

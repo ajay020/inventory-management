@@ -14,11 +14,7 @@ class DashboardController extends Controller
 
         $activeProducts = Product::where('is_active', true)->count();
 
-        $lowStockProducts = Product::whereColumn(
-            'stock_quantity',
-            '<=',
-            'minimum_stock_level'
-        )->count();
+        $lowStockProducts = Product::lowStock()->count();
 
         $outOfStockProducts = Product::where(
             'stock_quantity',

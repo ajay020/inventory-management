@@ -45,6 +45,11 @@ Route::patch(
 ->withTrashed()
 ->name('products.restore');
 
+Route::get(
+        '/products/low-stock',
+        [ ProductController::class, 'lowStock' ]
+    )->name('products.low-stock');
+
 Route::resource('products', ProductController::class);
 
 

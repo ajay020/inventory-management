@@ -41,6 +41,14 @@ class Product extends Model
         );
     }
 
+    public function scopeLowStock(Builder $query): Builder {
+        return $query->whereColumn(
+            'stock_quantity',
+            '<=',
+            'minimum_stock_level'
+        );
+    }
+
     public function isLowStock(): bool
     {
         return $this->stock_quantity <= $this->minimum_stock_level;

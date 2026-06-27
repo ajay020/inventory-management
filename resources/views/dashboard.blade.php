@@ -20,6 +20,7 @@
         <x-app.stat-card
             title="Low Stock"
             :value="$lowStockProducts"
+            :href="route('products.low-stock')"
         />
 
         <x-app.stat-card
