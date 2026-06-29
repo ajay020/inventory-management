@@ -95,10 +95,13 @@ class ProductController extends Controller {
     }
 
      public function trash() {
-        $products = Product::onlyTrashed()
+        $products = Product::query() 
+            ->onlyTrashed()
+            ->search(request('search'))
             ->with('category')
             ->latest('deleted_at')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view(
             'products.trash',

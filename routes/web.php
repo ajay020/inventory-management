@@ -4,13 +4,14 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Category
+// ========================= Category =========================
 Route::get(
     'categories/trash',
     [CategoryController::class, 'trash']
@@ -32,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
 });
 
-// Product
+// =================== Product =================================
 Route::get(
     'products/trash',
     [ProductController::class, 'trash']
@@ -53,7 +54,28 @@ Route::get(
 Route::resource('products', ProductController::class);
 
 
-// Dashboard 
+
+
+//================== Suppliers ==========================
+Route::get(
+    'suppliers/trash',
+    [SupplierController::class, 'trash']
+)->name('suppliers.trash');
+
+Route::patch(
+    'suppliers/{supplier}/restore',
+    [SupplierController::class, 'restore']
+)
+->withTrashed()
+->name('suppliers.restore');
+
+Route::middleware('auth')->group(function () {
+    Route::resource('/suppliers', SupplierController::class);
+});
+
+
+
+//====================== Dashboard ==================================================
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');

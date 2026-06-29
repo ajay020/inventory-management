@@ -34,6 +34,13 @@
                 Products
             </x-app.sidebar-link>
 
+             <x-app.sidebar-link
+                :href="route('suppliers.index')"
+                :active="request()->routeIs('suppliers.*')"
+            >
+                Suppliers
+            </x-app.sidebar-link>
+
         </div>
     </nav>
 

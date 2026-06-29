@@ -1,36 +1,24 @@
 <x-app-layout>
 
+    <x-slot name="header">
+        <x-app.page-header
+            title="Trashed Suppliers"
+            description="Manage trashed suppliers."
+        />
+    </x-slot>
+
     <div class="flex items-center justify-between mb-6">
-            <div>
-                <h2  class="text-2xl font-bold text-gray-900 dark:text-white">
-                    Trashed Products
-                </h2>
-
-                <p class="text-gray-500">
-                    Restore deleted products.
-                </p>
-            </div>
-
-            <a
-                href="{{ route('products.create') }}"
-            >
-                <x-primary-button>
-                    New Product
-                </x-primary-button>
-            </a>
-    </div>
-
-  <div class="flex items-center justify-between mb-6">
 
         <form
-            action="{{ route('products.trash') }}"
+            action="{{ route('suppliers.trash') }}"
             method="GET"
             class="flex gap-2"
         >
+
             <x-text-input
                 type="text"
                 name="search"
-                placeholder="Search products..."
+                placeholder="Search by name"
                 :value="request('search')"
             />
 
@@ -40,11 +28,25 @@
 
         </form>
 
-        <div class="text-sm text-gray-500">
-            Total:
-            <strong>{{ $products->total() }}</strong>
-        </div>
+        <a href="{{ route('suppliers.create') }}">
+            <x-primary-button>
+                New Supplier
+            </x-primary-button>
+        </a>
 
+        {{-- <a
+            href="{{ route('suppliers.trash') }}"
+        >
+            <x-secondary-button>
+                Trash
+            </x-secondary-button>
+        </a> --}}
+
+    </div>
+
+    <div class="mb-4 text-sm text-gray-500">
+        Total suppliers:
+        <strong>{{ $suppliers->total() }}</strong>
     </div>
 
     <x-app.card class="p-0">
@@ -56,27 +58,23 @@
                 <x-app.table-row>
 
                     <x-app.table-cell head>
-                        SKU
+                        Name
                     </x-app.table-cell>
 
                     <x-app.table-cell head>
-                        Product
+                        Contact Person
                     </x-app.table-cell>
 
                     <x-app.table-cell head>
-                        Category
+                        Email
                     </x-app.table-cell>
 
                     <x-app.table-cell head>
-                        Cost
+                        Phone
                     </x-app.table-cell>
 
                     <x-app.table-cell head>
-                        Price
-                    </x-app.table-cell>
-
-                    <x-app.table-cell head>
-                        Stock
+                        Address
                     </x-app.table-cell>
 
                     <x-app.table-cell head>
@@ -93,49 +91,33 @@
 
             <x-app.table-body>
 
-                @forelse($products as $product)
+                @forelse($suppliers as $supplier)
 
                     <x-app.table-row>
 
                         <x-app.table-cell>
-                            {{ $product->sku }}
+                            {{ $supplier->name }}
                         </x-app.table-cell>
 
                         <x-app.table-cell>
-                            {{ $product->name }}
+                            {{ $supplier->contact_person }}
                         </x-app.table-cell>
 
                         <x-app.table-cell>
-                            {{ $product->category->name }}
+                            {{ $supplier->email }}
                         </x-app.table-cell>
 
                         <x-app.table-cell>
-                            ₹{{ number_format($product->cost_price, 2) }}
+                            {{ $supplier->phone }}
                         </x-app.table-cell>
 
-                        <x-app.table-cell>
-                            ₹{{ number_format($product->selling_price, 2) }}
-                        </x-app.table-cell>
-
-                        <x-app.table-cell>
-
-                            @if($product->isLowStock())
-
-                                <span class="font-semibold text-red-600">
-                                    {{ $product->stock_quantity }}
-                                </span>
-
-                            @else
-
-                                {{ $product->stock_quantity }}
-
-                            @endif
-
+                         <x-app.table-cell>
+                            {{ $supplier->address }}
                         </x-app.table-cell>
 
                         <x-app.table-cell>
 
-                            @if($product->is_active)
+                            @if($supplier->is_active)
 
                                 <span class="text-green-600">
                                     Active
@@ -153,7 +135,9 @@
 
                         <x-app.table-cell>
 
-                            <x-app.restore-button  :action="route('products.restore', $product->id)" > 
+                            <x-app.restore-button 
+                                 :action="route('suppliers.restore', $supplier->id)"
+                            > 
                                 Restore 
                             </x-app.restore-button>
 
@@ -167,7 +151,7 @@
 
                         <x-app.empty-state
                             :colspan="8"
-                            message="No products found."
+                            message="No Supplier found."
                         />
 
                     </x-app.table-row>
@@ -181,7 +165,7 @@
     </x-app.card>
 
     <div class="mt-6">
-        {{ $products->links() }}
+        {{ $suppliers->links() }}
     </div>
 
 </x-app-layout>
